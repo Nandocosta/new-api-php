@@ -17,6 +17,16 @@
             $method = strtolower($_SERVER['REQUEST_METHOD']);
 
             try {
+                // $inputJSON = file_get_contents('php://input');
+                // $input = json_decode($inputJSON, TRUE);
+                // $_POST = array_merge($_POST, $input);
+                if($method == 'post' || $method ==  'put'){
+                    $inputJSON = file_get_contents('php://input');
+                    $body = json_decode($inputJSON, TRUE);
+                    $_POST = array_merge($_POST, $body);
+             }
+                // var_dump($method);
+                // return;
                 $response = call_user_func_array(array(new $service, $method), $url);
 
                 http_response_code(200);
