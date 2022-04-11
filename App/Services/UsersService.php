@@ -5,39 +5,37 @@
 
     class UsersService
     {
-        public function get($id = null) 
+        public static function findAll() 
         {
-            if ($id) {
-                return Users::select($id);
-            } else {
-                return Users::selectAll();
-            }
+            return Users::selectAll();
+        }
+        public static function findById($id)
+        {
+            return Users::select('id', $id);
+        }
+        public static function findByEmail($email) 
+        {
+            return Users::select('email', $email);
         }
 
-        public function post() 
+        public static function save($data) 
         {
-            $data = $_POST;
-            
-            if(empty($data['nome'])){
-                throw new \Exception('nome não pode está vazio');
-            }
-            if(empty($data['email'])){
-                throw new \Exception('email não pode está vazio');
-            }
-            if(empty($data['password'])){
-                throw new \Exception('senha não pode está vazio');
-            }
+            // $hasExists = self::findByEmail($data['email']);
+            // if($hasExists){
+            //     throw new \Exception("Usuario já cadastrado com esse email", 422);
+            // }
             return Users::insert($data);
-            
         }
 
-        public function update() 
+        public static function update($id, $data) 
         {
-            
+            $user = self::findById($id);
+            $format_data = array_merge($user, $data);
+            return Users::update($id, $format_data);
         }
 
-        public function delete() 
+        public static function delete($id) 
         {
-            
+            return Users::destroy($id);
         }
     }
