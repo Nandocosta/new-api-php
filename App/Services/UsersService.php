@@ -17,7 +17,6 @@
         {
             return Users::select('email', $email);
         }
-
         public static function save($data) 
         {
             // $hasExists = self::findByEmail($data['email']);

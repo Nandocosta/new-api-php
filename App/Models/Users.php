@@ -72,9 +72,9 @@
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
-                return 'Usuário(a) inserido com sucesso!';
+                return 'Usuário(a) alterado com sucesso!';
             } else {
-                throw new \Exception("Falha ao inserir usuário(a)!");
+                throw new \Exception("Falha ao alterar usuário(a)!");
             }
         }
 
@@ -88,7 +88,22 @@
             if ($stmt->rowCount() > 0) {
                 return 'Usuário deletado com sucesso!';
             } else {
-                throw new \Exception("Falha ao inserir usuário(a)!");
+                throw new \Exception("Falha ao deletar usuário(a)!");
+            }
+        }
+
+        public static function logar($email, $password) 
+            {
+                $sql = 'SELECT * FROM '.self::$table.' WHERE email = :em and password =:pa';
+                $stmt = self::conn()->prepare($sql);
+                $stmt->bindValue(':em', $email);
+                $stmt->bindValue(':pa', $password);
+                $stmt->execute();    
+
+            if ($stmt->rowCount() > 0) {
+                return $stmt->fetch(\PDO::FETCH_ASSOC);
+            } else {
+                throw new \Exception("Nenhum usuário encontrado!");
             }
         }
     }

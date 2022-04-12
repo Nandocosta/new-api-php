@@ -50,7 +50,7 @@
             $response['http'] = 201;
             return  $response;
         }
-
+      
         public function edit($id) 
         {
             $response = [];
@@ -85,6 +85,28 @@
 
             $response['data'] =  UsersService::delete($id);
             $response['http'] = 201;
+            return  $response;
+        }
+        public function logar()
+        {
+            $inputJSON = file_get_contents('php://input');
+            $body = json_decode($inputJSON, TRUE);
+            if(!$body){
+                throw new \Exception("campos vazios", 422);
+            }
+
+            $metodoHTTP = strtolower($_SERVER['REQUEST_METHOD']);
+
+            if($metodoHTTP !== 'loga'){
+                throw new \Exception("metodo inválido", 422);
+            }
+
+            if(!$body["email"] || !$body["password"]){
+                throw new \Exception('Senha ou email incorreto', 422);
+            }
+
+            $response['data'] =  users::logar($body["email"],$body["password"]);
+            $response['http'] = 200;
             return  $response;
         }
     }
