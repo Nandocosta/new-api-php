@@ -97,7 +97,7 @@
 
             $metodoHTTP = strtolower($_SERVER['REQUEST_METHOD']);
 
-            if($metodoHTTP !== 'loga'){
+            if($metodoHTTP !== 'post'){
                 throw new \Exception("metodo inválido", 422);
             }
 

@@ -54,7 +54,7 @@
         public function delete() 
         {
             $inputJSON = file_get_contents('php://input');
-            $body = json_decode($inputJSON, TRUE);
+            $body = $_GET;
             if(!$body){
                 throw new \Exception("campos vazios", 422);
             }
@@ -64,7 +64,7 @@
             if($metodo !== 'delete'){
                 throw new \Exception("metodo inválido", 422);
             }
-
+          
             if(!$body["pokemon_id"] || !$body["user_id"]){
                 throw new \Exception('pokemon_id e user_id precisa ser informado', 422);
             }

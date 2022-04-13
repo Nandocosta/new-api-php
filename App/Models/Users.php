@@ -94,7 +94,7 @@
 
         public static function logar($email, $password) 
             {
-                $sql = 'SELECT * FROM '.self::$table.' WHERE email = :em and password =:pa';
+                $sql = 'SELECT id, nome, email FROM '.self::$table.' WHERE email =:em and password =:pa';
                 $stmt = self::conn()->prepare($sql);
                 $stmt->bindValue(':em', $email);
                 $stmt->bindValue(':pa', $password);

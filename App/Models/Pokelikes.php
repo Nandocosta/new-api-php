@@ -46,6 +46,9 @@
 
         public static function insert($data)
         {
+            $pokemon_id = $data['pokemon_id'];
+            $user_id = $data['user_id'];
+
             $sql = 'INSERT INTO '.self::$table.' (pokemon_id, user_id) VALUES (:pk, :us)';
             
             $stmt = self::conn()->prepare($sql);
@@ -56,7 +59,7 @@
             if ($stmt->rowCount() > 0) {
                 return 'pokemon inserido com sucesso!';
             } else {
-                throw new \Exception("Falha ao inserir pokemon!");
+                throw new \Exception("Falha ao inserir pokemon! sql: $sql , pk:$pokemon_id, us:$user_id ");
             }
         }
 
