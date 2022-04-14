@@ -49,7 +49,7 @@
             
             $stmt = self::conn()->prepare($sql);
             $stmt->bindValue(':em', $data['email']);
-            $stmt->bindValue(':pa', $data['password']);
+            $stmt->bindValue(':pa', password_hash($data['password'], PASSWORD_DEFAULT));
             $stmt->bindValue(':na', $data['nome']);
             $stmt->execute();
 
@@ -66,7 +66,7 @@
             $stmt = self::conn()->prepare($sql);
             
             $stmt->bindValue(':em', $data['email']);
-            $stmt->bindValue(':pa', $data['password']);
+            $stmt->bindValue(':pa', password_hash($data['password'],PASSWORD_DEFAULT));
             $stmt->bindValue(':na', $data['nome']);
             $stmt->bindValue(':id', $id);
             $stmt->execute();
@@ -74,7 +74,7 @@
             if ($stmt->rowCount() > 0) {
                 return 'Usuário(a) alterado com sucesso!';
             } else {
-                throw new \Exception("Falha ao alterar usuário(a)!");
+                throw new \Exception("Falha ao alterar usuário(a)! ".$sql);
             }
         }
 
@@ -94,16 +94,22 @@
 
         public static function logar($email, $password) 
             {
-                $sql = 'SELECT id, nome, email FROM '.self::$table.' WHERE email =:em and password =:pa';
+                $sql = 'SELECT * FROM '.self::$table.' WHERE email =:em';
                 $stmt = self::conn()->prepare($sql);
                 $stmt->bindValue(':em', $email);
-                $stmt->bindValue(':pa', $password);
                 $stmt->execute();    
 
             if ($stmt->rowCount() > 0) {
-                return $stmt->fetch(\PDO::FETCH_ASSOC);
+               $user = $stmt->fetch(\PDO::FETCH_ASSOC);
             } else {
                 throw new \Exception("Nenhum usuário encontrado!");
             }
+            if (password_verify($password, $user['password'])) {
+                $resp = ["id"=>$user['id'], "nome"=>$user['nome'], "email"=> $user['email'] ];
+                return $resp;
+            }else{
+                throw new \Exception("se não aqui!");
+            }
+            
         }
     }

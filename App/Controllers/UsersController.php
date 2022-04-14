@@ -104,6 +104,10 @@
             if(!$body["email"] || !$body["password"]){
                 throw new \Exception('Senha ou email incorreto', 422);
             }
+            if(!$body["email"] || !$body["password"]){
+                throw new \Exception('Senha ou email incorreto', 422);
+            }
+            
 
             $response['data'] =  users::logar($body["email"],$body["password"]);
             $response['http'] = 200;
